@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+* {
+  font-family: "Instrument Sans", sans-serif;
+}
+/* Estilos generales para el body */
+body
+{
+  margin: 0;
+  font-family: 'Instrument Sans', sans-serif;
+  display: flex;
+  background-color: #f8fafc;
+}
+
+h1
+{
+  color: #1d4ed8;
+}
+
+.sidebar {
+  width: 250px;
+  height: calc(100vh - 20px);
+  background-color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  height: 35px;
+  margin-top: 10px;
+  color:#1D4ED8;
+}
+
+.sidebar-title-bold {
+  font-weight: bold;
+}
+
+.sidebar-title-normal {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.sidebar-separator {
+  border: 0;
+  height: .1px;
+  background-color: #d6dce7;
+  margin-bottom: 30px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-weight: 300;
+}
+
+.sidebar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: #A0AEC0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.sidebar-menu-item:hover {
+  
+  background-color: #F1F5F9;
+  transform: scale(1.01);
+}
+
+.sidebar-icon-bg {
+  background-color: #F1F5F9;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-icon-bg img {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar-logout-button {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #2D3748;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sidebar-logout-button:hover {
+  background-color: rgb(255, 255, 255);
+  transform: scale(1.01);
+}
+/* Estilo para la opción activa en el sidebar */
+.sidebar-menu-item.active {
+  background-color: #F1F5F9;
+  border-radius: 5px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-menu-item.active span {
+  color: #2D3748; /* Cambiar el color del texto también */
+}
+
+/* Estilos para el contenido principal */
+.content
+{
+  flex: 1;
+  padding: 20px;
+  margin-top: 100px;
+  margin-left: 270px;
+  margin-right: 10px;
+  background-color: #f1f5f9;
+  border-radius: 15px;
+  
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Encabezado del contenido */
+.content header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos para la sección de descargas */
+.download-section
+{
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end; /* Esto alinea el botón a la derecha */
+  padding: 10px; /* Añade algo de espacio alrededor */
+}
+
+.download-section button
+{
+  margin-right: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.download-section button:hover
+{
+  background-color: #1d4ed8;
+}
+
+/* Estilos para la tabla de membresías */
+.membership-table table
+{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.membership-table th,
+.membership-table td
+{
+  text-align: left;
+  border-top: 1px solid #E2E8F0;    /* Borde superior */
+  border-bottom: none; /* Borde inferior */
+  border-left: none;            /* Quita borde izquierdo */
+  border-right: none;           /* Quita borde derecho */
+  padding: 10px;
+  color: #0f172a;
+}
+
+.membership-table th
+{
+  font-weight: bold;
+  border: none;
+  color: #475569;
+}
+
+.aceptada, .pendiente, .rechazada
+{
+  background-color:  #10b981;  /* Color del fondo */
+  color: #fff;                /* Color del texto */
+  padding: 5px 10px;          /* Espaciado interno */
+  border-radius: 15px;         /* Bordes redondeados */
+  display: inline-block;      /* Para que el fondo se ajuste al contenido */
+  font-size: 14px;
+  text-decoration: none;      /* Opcional: quitar subrayado si es un enlace */
+  font-weight: bold;
+}
+
+.pendiente
+{
+  background-color: #f59e0b;
+}
+
+.rechazada
+{
+  background-color:  #ef4444;
+}
+
+/* Estilos para el botón de descarga en la tabla */
+.download-btn
+{
+  padding: 5px 10px;
+  border: none;
+  background-color:  #475569;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.1s;
+}
+
+.download-btn i
+{
+  margin-left: 5px;
+}
+
+.download-btn:hover
+{
+  background-color: #293546;
+  transform: scale(1.1);
+  transition: 0.1s;
+}
+
+@media (max-width: 768px) {
+
+  /* El sidebar se oculta */
+  .sidebar {
+    display: none;
+  }
+
+  /* El contenido toma todo el ancho disponible */
+  .content {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 80px;
+  }
+
+  /* La tabla tendrá scroll si no cabe */
+  .membership-table {
+    position: absolute !important;
+    overflow-x: auto;
+    width: 100% !important;
+  }
+
+  .membership-table table {
+    min-width: 600px; /* Fuerza la tabla a no achicarse demasiado */
+  }
+}
+
+@media (max-width: 480px) {
+
+  .content {
+    padding: 10px;
+    margin-top: 70px;
+  }
+
+  .membership-table table {
+    min-width: 700px; /* Asegura que las columnas no se junten demasiado */
+  }
+
+  /* Hacemos que las celdas tengan texto más pequeño si es necesario */
+  .membership-table th,
+  .membership-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  /* Botón de descarga en tabla más compacto */
+  .download-btn {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  /* Scroll horizontal visible */
+  .membership-table {
+    overflow-x: auto;
+  }
+}

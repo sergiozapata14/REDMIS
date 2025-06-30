@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Membresías</title>
+  <link rel="stylesheet" href="css/membresias.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+  <!-- Asegurarnos de que jsPDF está cargado correctamente -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+  <div id="sidebar"></div> 
+
+  <main class="content">
+    <header>
+      <!-- Espacio para header si es necesario -->
+    </header>
+
+    <section class="membership-table">
+      <h1>Membresías</h1>
+      <table>
+        <thead>
+            <tr>
+                <th>Código de membresía</th>
+                <th>Miembro desde</th>
+                <th>Válido hasta</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Acción</th> <!-- Cambiado a "Acción" para ser más genérico -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas se generarán dinámicamente con JavaScript -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module" src="API/js/membresias.js"></script>
+  
+</body>
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+</html>

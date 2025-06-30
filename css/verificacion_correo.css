@@ -1,0 +1,108 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Instrument Sans", sans-serif;
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.contenedor-verificacion{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+h2{
+    color: #1D4ED8;
+    font-size: 2.1rem;
+}
+p{
+    margin: 20px 0px 20px 0px;
+    text-align: center;
+    font-size: 1rem;
+   
+}
+.bold{
+    font-weight: bold;
+}
+form{
+    background-color: #F0F4F9;
+    width: 80%;
+    padding: 20px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+}
+
+input{
+    width: 65%;
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    background-color: #E2E8F0;
+    color: black;
+    text-align: center;
+}
+
+button{
+    width: 50%;
+    height: 40px;
+    margin: 20px 0px 20px 0px;
+    background-color: #2563EB;
+    color: white;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+ /* Animaciones CSS */
+ @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.error-animation {
+    animation: shake 0.5s ease-in-out;
+    border: 2px solid #ff4444 !important;
+}
+
+.success-animation {
+    animation: success 0.5s ease-in-out;
+    border: 2px solid #00C851 !important;
+}
+
+.message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #ff4444;
+    border: 1px solid #ff4444;
+}
+
+.success-message {
+    background-color: #e8f5e9;
+    color: #00C851;
+    border: 1px solid #00C851;
+}

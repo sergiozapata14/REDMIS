@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+* {
+    font-family: "Instrument Sans", sans-serif;
+}
+
+body {
+    background-color: #F8FAFC !important;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.background {
+    width: 100%;
+    height: 327px;
+    background-color: #E2E8F0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.title-container {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1D4ED8;
+    position: absolute;
+    top: 40px;
+    left: 300px;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 150px;
+    margin-left: 150px;
+    padding-left: 5%;
+    width: 70%;
+}
+
+.table-box {
+    background-color: #F1F5F9;
+    padding: 5px 20px;
+    border-radius: 10px;
+    width: 100%;
+    color: #0F172A;
+    letter-spacing: 1px;
+}
+
+.table-box h3 {
+    color: #1D4ED8;
+}
+
+.table-box table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-box td,
+th {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table-box th {
+    font-weight: 600;
+    color: #0F172A;
+    font-size: 14px;
+    text-align: left;
+    white-space: normal;
+    /* Permite saltos de línea */
+    word-wrap: break-word;
+    /* Rompe palabras largas si es necesario */
+}
+
+.table-box tbody {
+    color: #334155
+}
+
+#members-per-role tbody tr {
+    height: 70px;
+}
+
+#members-per-role th,
+#members-per-role td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+#members-per-role td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-box label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.table-box label.name {
+    font-weight: bold;
+}
+
+
+.table-box label.role {
+    font-weight: 700;
+}
+
+.table-box table button.action-btn {
+    background-color: #1D4ED8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    transition: 0.1s;
+    border: none;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+}
+
+.table-box table button.action-btn:hover {
+    background-color: #334155;
+    transform: scale(1.1);
+    transition: 0.1s;
+}
+
+.table-box table button.action-btn a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.table-box table button.action-btn i {
+    padding: 2px 8px 2px 0;
+}
+
+.table-box table button.action-btn a:visited {
+    text-decoration: none;
+    color: #fff;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 25px;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 3px;
+    transform: translateY(-50%);
+    transition: 0.3s;
+}
+
+input:checked+.slider {
+    background-color: #1D4ED8;
+}
+
+input:checked+.slider::before {
+    left: 25px;
+}
+
+@media (max-width: 768px) {
+  .title-container {
+    left: 50px;               /* Mover el título más al centro */
+    font-size: 30px;          /* Reducir tamaño */
+    top: 60px;
+  }
+
+  .table-container {
+    margin-left: 0;           /* Quitamos margen lateral que rompe el layout */
+    padding-left: 20px;       /* Añadimos padding interno */
+    padding-right: 20px;
+    width: 90%;               /* Que se adapte al ancho del dispositivo */
+    flex-direction: column;   /* Por si en algún futuro hay más bloques */
+  }
+
+  .table-box {
+    padding: 10px;
+  }
+
+  .table-box h3 {
+    font-size: 18px;          /* Más chico para móviles/tablets */
+  }
+
+  .table-box table {
+    font-size: 12px;          /* Reducimos un poco el tamaño general */
+  }
+
+  .table-box td, .table-box th {
+    padding: 10px;            /* Reducimos padding para que quepa mejor */
+  }
+
+  .slider {
+    width: 40px;
+    height: 20px;
+  }
+
+  .slider::before {
+    width: 16px;
+    height: 16px;
+  }
+
+  input:checked + .slider::before {
+    left: 20px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .title-container {
+    font-size: 22px;
+    left: 20px;
+    top: 80px;
+    text-align: center;
+    width: calc(100% - 40px);
+  }
+
+  .table-box {
+    overflow-x: auto;         /* Habilitamos scroll horizontal si se necesita */
+    width: 95%;
+  }
+
+  .table-box table {
+    min-width: 600px;         /* Evitamos que se colapse demasiado la tabla */
+  }
+
+  .table-box td, .table-box th {
+    padding: 8px;
+  }
+
+  .table-box h3 {
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .toggle-switch {
+    width: 40px;
+    height: 20px;
+  }
+
+  .slider::before {
+    left: 2px;
+  }
+
+  input:checked + .slider::before {
+    left: 18px;
+  }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verficacion Correo</title>
+    <link rel="stylesheet" href="css/verificacion_correo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="contenedor-verificacion">
+        <h2>Verificar Cuenta</h2>
+        <form id="verification-form" method="post">
+            <p class="bold">Ingrese su codigo de verficacion:</p>
+            <p>Se ha enviado un codigo de verficacion a su correo electronico.</p>
+            <input type="text" id="codigo" pattern="\d{6}" maxlength="6" required 
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            
+            <div id="error-message" class="message error-message">
+                Código incorrecto. Por favor, intente nuevamente.
+            </div>
+            
+            <div id="success-message" class="message success-message">
+                ¡Verificación exitosa! Redirigiendo...
+            </div>
+            
+            <button type="submit">Verificar</button>
+        </form>
+    </div>
+
+    <!-- En verificacion_mail.html -->
+        <script type="module">
+            // Mover todo el código aquí dentro
+            import membersService from './API/services/members.js';
+            
+            // Definir primero las funciones auxiliares
+            function showError(message) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                document.getElementById('success-message').style.display = 'none';
+                document.getElementById('codigo').classList.add('error-animation');
+                setTimeout(() => document.getElementById('codigo').classList.remove('error-animation'), 500);
+            }
+
+            function showSuccess(message) {
+                const successMessage = document.getElementById('success-message');
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+                document.getElementById('codigo').classList.add('success-animation');
+            }
+
+            // Luego definir la función principal
+            async function validarCodigo(event) {
+                event.preventDefault();
+                console.log('Iniciando validación...');
+                
+                const codigo = document.getElementById('codigo');
+                const urlParams = new URLSearchParams(window.location.search);
+                const userEmail = urlParams.get('email');
+                
+                console.log('Datos a enviar:', {
+                    email: userEmail,
+                    code: codigo.value // Cambiado de 'code' a 'codigo' para coincidir con el backend
+                });
+
+                try {
+                    const response = await membersService.verifyCode({
+                        email: userEmail,
+                        code: codigo.value // Asegúrate que coincide con lo que espera el backend
+                    });
+                    
+                    console.log('Respuesta del servidor:', response);
+                    
+                    if (response.success) { // Cambiado de response.data.success a response.success
+                        showSuccess(response.message);
+                        setTimeout(() => {
+                            window.location.href = 'login.html?verified=true';
+                        }, 2000);
+                    } else {
+                        showError(response.message || 'Código incorrecto');
+                    }
+                } catch (error) {
+                    console.error('Error completo:', error);
+                    showError(error.message || 'Error en la verificación');
+                }
+            }
+
+            // Asignar el event listener después de definir las funciones
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('form').addEventListener('submit', validarCodigo);
+                
+                // Resto del código de inicialización...
+                const urlParams = new URLSearchParams(window.location.search);
+                const userEmail = urlParams.get('email');
+                
+                if (!userEmail) {
+                    window.location.href = 'crearcuenta.html';
+                    return;
+                }
+
+                // Configurar reenvío de código
+                const resendLink = document.createElement('a');
+                resendLink.href = '#';
+                resendLink.textContent = 'Reenviar código';
+                resendLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await membersService.resendCode(userEmail);
+                        alert('Se ha reenviado el código a tu email');
+                    } catch (error) {
+                        alert(error.message || 'Error al reenviar código');
+                    }
+                });
+                
+                document.querySelector('form').appendChild(resendLink);
+            });
+        </script>
+ 
+</body>
+</html>

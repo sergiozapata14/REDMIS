@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil</title>
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+  <div id="sidebar"></div> 
+  <div class="title-container">Perfil</div>
+
+  <div class="form-container">
+    <div class="form-box">
+      <label>Nombre</label>
+      <input id="nombre" type="text" placeholder="Nombre" disabled>
+      <label>Apellido(s)</label>
+      <input id="apellidos" type="text" placeholder="Apellido(s)" disabled>
+      <label>Género</label>
+      <input id="genero" type="text" placeholder="Género" disabled>
+      <label>Universidad</label>
+      <div id="universidad-container">
+        <input id="universidad" type="text" placeholder="Universidad" disabled>
+      </div>
+    </div>
+    <div class="form-box">
+      <label>Estado</label>
+      <div id="estado-container">
+        <input id="estado" type="text" placeholder="Estado" disabled>
+      </div>
+      <label>País</label>
+      <div id="pais-container">
+        <input id="pais" type="text" placeholder="País" disabled>
+      </div>
+      <label>Email</label>
+      <input id="email" type="email" placeholder="Email" disabled>
+      <label>Contraseña</label>
+      <input id="password" type="password" placeholder="Contraseña" disabled>
+    </div>
+  </div>
+  <div class="edit-button-container">
+    <button class="edit-button" id="editBtn">Editar</button>
+    <button class="edit-button" id="acceptBtn" style="display: none;">Aceptar</button>
+    <button class="cancel-Btn" id="cancelBtn" style="display: none;">Cancelar</button>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+  <script type="module">
+    import membersService from './API/services/members.js';
+    import loginService from './API/services/login.js';
+    import universitiesService from './API/services/universities.js';
+    import statesService from './API/services/states.js';
+    import countriesService from './API/services/country.js';
+
+    // Get user data from loginService instead of localStorage directly
+    const userData = loginService.getUserData();
+    const userId = userData?.userId;
+    const token = loginService.getToken();
+
+    const fields = ['nombre', 'apellidos', 'genero', 'universidad', 'estado', 'pais', 'email', 'password'];
+    let currentUniversidadId = null;
+    let currentEstadoId = null;
+    let currentPaisId = null;
+    let universidadesData = [];
+    let estadosData = [];
+    let paisesData = [];
+
+    const enableFields = (enabled) => {
+      fields.forEach(fieldId => {
+        document.getElementById(fieldId).disabled = !enabled;
+      });
+    };
+
+    const toggleButtons = (editing) => {
+      document.getElementById('editBtn').style.display = editing ? 'none' : 'inline-block';
+      document.getElementById('acceptBtn').style.display = editing ? 'inline-block' : 'none';
+      document.getElementById('cancelBtn').style.display = editing ? 'inline-block' : 'none';
+    };
+
+    const convertToSelect = async (containerId, inputId, service, currentValue, dataArray, isUniversidad = false) => {
+      try {
+        const response = await service.get();
+        dataArray = response;
+        
+        const container = document.getElementById(containerId);
+        const currentText = document.getElementById(inputId).value;
+        
+        // Crear select
+        const select = document.createElement('select');
+        select.id = `${inputId}-select`;
+        select.className = `${inputId}-select`;
+        
+        // Agregar opción vacía
+        const emptyOption = document.createElement('option');
+        emptyOption.value = '';
+        emptyOption.textContent = 'Seleccione una opción';
+        select.appendChild(emptyOption);
+        
+        // Agregar opciones
+        dataArray.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.id;
+          option.textContent = item.nombre;
+          
+          // Seleccionar la opción actual
+          if (item.nombre === currentText) {
+            option.selected = true;
+            if (isUniversidad) currentUniversidadId = item.id;
+            else if (inputId === 'estado') currentEstadoId = item.id;
+            else if (inputId === 'pais') currentPaisId = item.id;
+          }
+          
+          select.appendChild(option);
+        });
+        
+        // Reemplazar input por select
+        container.innerHTML = '';
+        container.appendChild(select);
+        
+        return dataArray;
+      } catch (error) {
+        console.error(`Error al cargar ${inputId}:`, error);
+        // Mantener el input si hay error
+        document.getElementById(containerId).innerHTML = `<input id="${inputId}" type="text" placeholder="${inputId.charAt(0).toUpperCase() + inputId.slice(1)}">`;
+        return [];
+      }
+    };
+
+    const convertBackToInput = (containerId, inputId, selectId, currentId) => {
+      const container = document.getElementById(containerId);
+      const select = document.getElementById(selectId);
+      
+      if (select) {
+        const selectedOption = select.options[select.selectedIndex];
+        const selectedText = selectedOption ? selectedOption.textContent : '';
+        const selectedValue = selectedOption ? selectedOption.value : null;
+        
+        container.innerHTML = `<input id="${inputId}" type="text" placeholder="${inputId.charAt(0).toUpperCase() + inputId.slice(1)}" disabled>`;
+        document.getElementById(inputId).value = selectedText;
+        
+        if (currentId !== undefined) {
+          if (inputId === 'universidad') currentUniversidadId = selectedValue;
+          else if (inputId === 'estado') currentEstadoId = selectedValue;
+          else if (inputId === 'pais') currentPaisId = selectedValue;
+        }
+      }
+    };
+
+    if (userId && token) {
+      membersService.getbyID(userId)
+        .then(user => {
+          document.getElementById('nombre').value = user.nombre || '';
+          document.getElementById('apellidos').value = user.apellidos || '';
+          document.getElementById('genero').value = user.genero || '';
+          document.getElementById('universidad').value = user.universidad || '';
+          document.getElementById('estado').value = user.estado || '';
+          document.getElementById('pais').value = user.pais || '';
+          document.getElementById('email').value = user.email || '';
+          document.getElementById('password').value = '********'; // Don't show real password
+        })
+        .catch(error => {
+          console.error('Error al cargar el perfil:', error);
+          alert('No se pudo cargar la información del usuario.');
+        });
+    } else {
+      alert('Usuario no autenticado.');
+      // Optional: redirect to login page
+      // window.location.href = 'login.html';
+    }
+
+    document.getElementById('editBtn').addEventListener('click', async () => {
+      enableFields(true);
+      toggleButtons(true);
+      // Clear password field when editing
+      document.getElementById('password').value = '';
+      
+      // Convertir campos a selects
+      universidadesData = await convertToSelect('universidad-container', 'universidad', universitiesService, document.getElementById('universidad').value, universidadesData, true);
+      estadosData = await convertToSelect('estado-container', 'estado', statesService, document.getElementById('estado').value, estadosData);
+      paisesData = await convertToSelect('pais-container', 'pais', countriesService, document.getElementById('pais').value, paisesData);
+    });
+
+    document.getElementById('acceptBtn').addEventListener('click', () => {
+      let passwordInput = document.getElementById('password').value;
+      let hashedPassword = passwordInput ? CryptoJS.MD5(passwordInput).toString() : "";
+      
+      // Convertir selects de vuelta a inputs antes de guardar
+      convertBackToInput('universidad-container', 'universidad', 'universidad-select', currentUniversidadId);
+      convertBackToInput('estado-container', 'estado', 'estado-select', currentEstadoId);
+      convertBackToInput('pais-container', 'pais', 'pais-select', currentPaisId);
+      
+      const updatedUser = {
+        nombre: document.getElementById('nombre').value,
+        apellidos : document.getElementById('apellidos').value,
+        genero: document.getElementById('genero').value,
+        universidad: currentUniversidadId, // Usar el ID numérico
+        estado: currentEstadoId, // Usar el ID numérico
+        pais: currentPaisId, // Usar el ID numérico
+        email: document.getElementById('email').value,
+        password: hashedPassword
+      };
+
+      // Only include password if it was changed
+      if (passwordInput === '') {
+        delete updatedUser.password;
+      }
+
+      membersService.updateMember(userId, updatedUser)
+        .then(() => {
+          alert('Perfil actualizado correctamente.');
+          enableFields(false);
+          toggleButtons(false);
+          // Reset password display
+          document.getElementById('password').value = '********';
+        })
+        .catch(error => {
+          console.error('Error al actualizar el perfil:', error);
+          alert('No se pudo actualizar el perfil.');
+        });
+    });
+
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+      location.reload();
+    });
+  </script>
+
+</body>
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+</html>

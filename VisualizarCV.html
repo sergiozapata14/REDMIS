@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar CV</title>
+    <link rel="stylesheet" href="css/visualizaCV.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Instrument Sans', sans-serif;
+            background-color: #F4F7FC;
+            display: flex;
+        }
+        .container {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+        }
+
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .cv-viewer iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* BOTONES */
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .approve {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .reject {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        #comment-box {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #1D4ED8;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+   
+    <div id="sidebar"></div>
+
+    <div class="container">
+        <button id="back-button">&#8592; Regresar</button>
+        <div class="header">Revisión de CV</div>
+
+        <div class="card">
+            <h2>Información del Candidato</h2>
+            <p><strong>Nombre:</strong> <span id="applicator_name"></span> </p>
+            <p><strong>Email:</strong> <span id="applicator_email"></span> </p>
+            <p><strong>Estatus de la solicitud:</strong> <span id="application_status"> </span></p>
+            <p><strong>Comentarios:</strong> <span id="applicant-comments"> </span></p>
+        </div>
+
+        <div class="card cv-viewer">
+            <h2>Curriculum Vitae</h2>
+            <iframe src=""></iframe>
+            <button class="btn btn-primary"> <i class="fas fa-download"></i><a id="download-cv" href="" download>Descargar CV</a></button>
+        </div>
+
+        <div class="card">
+            <h2>Solicitud</h2>
+            <div class="buttons">
+                <button id="show-accept-modal" type="button" class="button approve">Aprobar</button>
+                <button id="show-reject-modal" type="button" class="button reject">Rechazar</button>
+            </div>
+        </div>
+
+        <div id="modal-reject" class="modal">
+            <div id="modal-reject-content" class="modal-content">
+                <span id="close-reject-modal" class="close-modal">&times;</span>
+                <h3>Rechazar solicitud de membresía:</h3>
+                <label for="name">Escriba el motivo del rechazo:</label>
+                <textarea id="rejection-reason" rows="5" placeholder="Motivo de rechazo..."></textarea>
+                <div class="modal-action-btn">
+                    <button id="reject-application" type="button" class="button reject">Confirmar Rechazo</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-accept" class="modal">
+            <div id="modal-accept-content" class="modal-content">
+                <span id="close-accept-modal" class="close-modal">&times;</span>
+                <h3>Aceptar solicitud de membresía:</h3>
+                <label for="name">Escriba comentarios para el solicitante (Opcional):</label>
+                <textarea id="acceptation-comments" rows="5" placeholder="Comentarios..."></textarea>
+                <div class="modal-action-btn">
+                    <button id="accept-application" type="button" class="button approve">Aprobar solicitud</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script type="module">
+        import membershipApplicationService from './API/services/membershipApplication.js';
+        import loginService from './API/services/login.js';
+        import { getPDF } from './js/pdfProcessor.js';
+
+
+        const getBackButton = document.getElementById('back-button');
+        getBackButton.addEventListener('click', () => {
+            window.location.href = 'solicitudes_membresias.html';
+        });
+
+        // Obtener el ID de la solicitud de membresía desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationId = urlParams.get('application_id');
+        if (!applicationId) {
+            alert('No se ha proporcionado un ID de solicitud de membresía.');
+            window.location.href = 'solicitudes_membresias.html'; // Redirigir a la página de solicitudes si no hay ID
+        }
+
+        const application = await membershipApplicationService.obtenerPorID(applicationId);
+        
+
+        const applicatorName = document.getElementById('applicator_name');
+        const applicatorEmail = document.getElementById('applicator_email');
+        const applicationStatus = document.getElementById('application_status');
+        const applicantComments = document.getElementById('applicant-comments');
+
+        const cvIframe = document.querySelector('.cv-viewer iframe');
+        const downloadLink = document.getElementById('download-cv');
+
+        applicatorName.innerHTML = `${application.nombre}`;
+        applicatorEmail.innerHTML = `${application.email}`;
+        applicationStatus.innerHTML = `${application.estado}`;
+        applicantComments.innerHTML = `${application.comentarios}`;
+
+        const pdfURL = getPDF(application.cv_base64); // Obtener la URL del PDF
+        
+        cvIframe.src = pdfURL; // Establecer la fuente del iframe al PDF del CV
+        
+        downloadLink.href = pdfURL; // Establecer el enlace de descarga al blob creado
+
+
+        const confirmAction = async (action) => {
+            let confirmation = confirm(`¿Estás seguro de que deseas ${action} esta solicitud?`);
+            if (!confirmation) return;
+        };
+
+        const acceptButton = document.getElementById('accept-application');
+        const rejectButton = document.getElementById('reject-application');
+
+        const showRejectModal = document.getElementById('show-reject-modal');
+        const rejectModal = document.getElementById('modal-reject');
+        const closeRejectModal = document.getElementById('close-reject-modal');
+
+        const showAcceptModal = document.getElementById('show-accept-modal');
+        const acceptModal = document.getElementById('modal-accept');
+        const closeAcceptModal = document.getElementById('close-accept-modal');
+
+
+        acceptButton.addEventListener('click', async() => {
+            try {
+                const reason = document.getElementById('acceptation-comments').value.trim();
+                console.log(reason);
+
+                const response = await membershipApplicationService.aceptar(applicationId, {reason});
+                if (response) {
+                    alert("Solicitud aceptada correctamente.");
+                    window.location.href = 'solicitudes_membresias.html'; 
+                } else {
+                    alert("Error al aceptar la solicitud. Inténtalo de nuevo.");
+                }
+            } catch (error) {
+                console.error('Error al aprobar la solicitud:', error);
+                alert('Error al aprobar la solicitud. Inténtalo de nuevo.');
+                
+            }
+        });
+        rejectButton.addEventListener('click', async() => {
+            try {
+                const reason = document.getElementById('rejection-reason').value.trim();
+                    if (!reason) {
+                        alert('Debes escribir el motivo de rechazo de la solicitud.');
+                        return;
+                    }
+                    const response = await membershipApplicationService.rechazar(applicationId, {reason});
+                    if (response) {
+                        alert("Solicitud rechazada correctamente.");
+                        window.location.href = 'solicitudes_membresias.html'; 
+                    } else {
+                        alert("Error al rechazar la solicitud. Inténtalo de nuevo.");
+                    }
+                
+            } catch (error) {
+                console.error('Error al rechazar la solicitud:', error);
+                alert('Error al rechazar la solicitud. Inténtalo de nuevo.');
+            }
+        });
+        showRejectModal.addEventListener('click', () => rejectModal.style.display = 'block');
+        closeRejectModal.addEventListener('click', () => rejectModal.style.display = 'none');
+
+        showAcceptModal.addEventListener('click', () => acceptModal.style.display = 'block');
+        closeAcceptModal.addEventListener('click', () => acceptModal.style.display = 'none');
+        
+    </script>
+
+</body>
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+</html>

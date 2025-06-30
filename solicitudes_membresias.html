@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitudes de membresía</title>
+  <link rel="stylesheet" href="css/membership_applications.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div id="sidebar"></div> 
+
+    <div class="background"></div>
+    <div class="title-container">Solicitudes de membresia</div>
+
+    <div class="table-container">
+      <div class="table-box">
+        <h3>Lista de membresías solicitadas</h3>
+        <table id="membership_applications" class="display">
+          <thead>
+            <tr>
+              <th>MIEMBRO</th>
+              <th>MEMBRESIA <br> SOLICITADA</th>
+              <th>ESTADO</th>
+              <th>FECHA DE <br> SOLICITUD</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="membership_applications_body">
+            
+          </tbody> 
+        </table>
+      </div>
+    </div>
+
+    <!-- jQuery y DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <script type="module">
+      import membershipApplicationService from './API/services/membershipApplication.js';
+      import loginService from './API/services/login.js';
+
+      const applications = await membershipApplicationService.obtener();
+      const pendingApplications = applications.filter(application => application.estado === 'PENDIENTE');
+
+      const ma_table = document.getElementById('membership_applications_body');
+      ma_table.innerHTML = '';
+      pendingApplications.forEach(application =>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><label class="name">${application.nombre_usuario}</label><br><label class="email">${application.email_usuario}</label></td>
+          <td><label class="membership">${application.membresia}</label></td>
+          <td><label class="status">${application.estado}</label></td>
+          <td><label>${new Date(application.fecha_solicitud).toLocaleDateString()}</label></td>
+          <td>
+            <button class="evaluate"><i class="fa-solid fa-file-fragment"></i><a href="VisualizarCV.html?application_id=${application.id}">Evaluar</a></button>
+          </td>`;
+        ma_table.appendChild(tr);
+      }); 
+
+      $(document).ready(function() {
+          $('#membership_applications').DataTable({
+              paging: true,       
+              searching: true,    
+              ordering: true,
+              pageLength: 5,      
+              lengthMenu: [5, 7, 10],   
+              language: {
+                  lengthMenu: "Mostrar _MENU_ registros por página",
+                  zeroRecords: "No hay solicitudes de membresía nuevas",
+                  info: "Mostrando página _PAGE_ de _PAGES_",
+                  infoEmpty: "No hay registros disponibles",
+                  infoFiltered: "(filtrado de _MAX_ registros en total)",
+                  search: "Buscar:",
+                  paginate: {
+                      first: "Primero",
+                      last: "Último",
+                      next: "Siguiente",
+                      previous: "Anterior"
+                  }
+              }
+          });
+      });
+    </script>
+
+
+    
+</body>
+
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+</html>

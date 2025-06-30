@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redmis-Estadísticas</title>
+    <link rel="stylesheet" href="css/estadisticas.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="sidebar"></div> 
+
+    <div class="background"></div>
+    
+    <div class="title-container">
+        <p>Estadisticas</p>
+        <div class="filtro-estadisticas">
+            <select id="selector-estadisticas" class="selector-estadisticas">
+                <option value="geograficas">Estadísticas Geográficas</option>
+                <option value="solicitudes">Estadísticas de Solicitudes</option>
+                <option value="membresias">Estadísticas de Membresías</option>
+            </select>
+        </div>
+        
+    </div>
+    
+        <!-- Main content -->
+        <div class="contenedor-main">
+            
+            <div class="contenedor-header">
+                <div class="tarjeta-estadistica">
+                    <h3>Total de miembros</h3>
+                    <p class="valor-estadistica" id="total-miembros">Cargando...</p>
+                </div>
+                
+                <div class="tarjeta-estadistica">
+                    <h3>Solicitudes Pendientes</h3>
+                    <p class="valor-estadistica" id="solicitudes-pendientes">Cargando...</p>
+                </div>
+                <div class="tarjeta-estadistica">
+                    <h3>Solicitudes Aceptadas</h3>
+                    <p class="valor-estadistica" id="solicitudes-aceptadas">Cargando...</p>
+                </div>
+                <div class="tarjeta-estadistica">
+                    <h3>Solicitudes rechazadas</h3>
+                    <p class="valor-estadistica" id="solicitudes-rechazadas">Cargando...</p>
+                </div>
+                <div class="tarjeta-estadistica">
+                    <h3>Membresias Activas</h3>
+                    <p class="valor-estadistica" id="membresias-activas">Cargando...</p>
+                </div>
+                <div class="tarjeta-estadistica">
+                    <h3>Membresias Vencidas</h3>
+                    <p class="valor-estadistica" id="membresias-vencidas">Cargando...</p>
+                </div>
+               
+            </div>
+            <div class="contenedor-graficos"> 
+                <div class="grafico-pais">
+                    <h2>Distribución de Miembros por País</h2>
+                    <div class="contenedor-canvas">
+                        <canvas id="grafica-pais"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-estado">
+                    <h2>Distribución de Miembros por Estado de Mexico</h2>
+                    <div class="contenedor-canvas">
+                        <canvas id="grafica-estado"></canvas>
+                    </div>
+                </div>
+                
+                <div class="grafico-universidad">
+                    <h2>Miembros por Universidad</h2>
+                    <div class="tabla-universidad">
+                        <div class="cabecera-tabla">
+                            <div class="columna-universidad">Universidad</div>
+                            <div class="columna-numero">Número de Miembros</div>
+                        </div>
+                        <div class="cuerpo-tabla" id="tabla-universidades">
+                            <!-- Los datos de la tabla se cargarán con JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script defer type="module" src="API/services/statistics.js"></script>   
+</body>
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+</html>

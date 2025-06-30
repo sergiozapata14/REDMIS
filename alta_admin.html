@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alta de administrador</title>
+  <link rel="stylesheet" href="css/alta_admin.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div id="sidebar"></div> 
+
+    <div class="background"></div>
+    <div class="title-container">Alta de administrador</div>
+
+    <div class="table-container">
+      <div class="table-box">
+        <h3>Lista de miembros según rol</h3>
+        <table id="members-per-role" class="display">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>MIEMBRO</th>
+              <th>MEMBRESIA</th>
+              <th>ROL</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="members-per-role-body">
+            
+          </tbody> 
+        </table>
+      </div>
+    </div>
+
+    <!-- jQuery y DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <script type="module">
+      import membersService from './API/services/members.js';
+      import loginService from './API/services/login.js';
+      import rolesService from './API/services/roles.js';
+
+      const members = await membersService.get();
+
+
+      const changeRole = async (event) => {
+          const confirmacion = confirm("¿Deseas cambiar el rol de este usuario?");
+
+          if (confirmacion) {
+              const turnToAdmin = event.target;
+              
+              const memberId = turnToAdmin.closest('tr').querySelector('.id').textContent;
+              const newRole = turnToAdmin.checked ? 1 : 2; 
+              
+              try {
+                  await rolesService.changeRole(memberId, { role : newRole });
+                  alert("El rol del miembro ha sido actualizado correctamente.");
+                  // Actualiza la tabla para reflejar el cambio
+                  const roleLabel = turnToAdmin.closest('tr').querySelector('.role');
+                  roleLabel.textContent = newRole === 1 ? 'Administrador' : 'Usuario';
+              } catch (error) {
+                  console.error("Error al actualizar el rol:", error);
+                  alert("Hubo un error al actualizar el rol del miembro.");
+              }
+          } else {
+              event.preventDefault();
+              const turnToAdmin = event.target;
+              turnToAdmin.checked = !turnToAdmin.checked;
+          }
+      }
+
+
+      const table = document.getElementById('members-per-role-body');
+      table.innerHTML = '';
+      members.forEach(member =>{
+        const tr = document.createElement('tr');
+        let role = member.rol === 1 ? 'Administrador' : 'Usuario';
+        tr.innerHTML = `
+          <td><label class="id">${member.usuario_id}</label></td>
+          <td><label class="name">${member.nombre_completo}</label></td>
+          <td><label class="membership">${member.membresia}</label></td>
+          <td><label class="role">${role}</label></td>
+          <td>
+            <div class="toggle-container">
+                <label class="toggle-switch">
+                    <input type="checkbox" class="turn-to-admin" ${member.rol === 1 ? 'checked' : ''}>
+                    <span class="slider"></span>
+                </label>
+            </div>
+          </td>`;
+        table.appendChild(tr);
+        const toggle = tr.querySelector('.turn-to-admin');
+        toggle.addEventListener('change', changeRole);
+      }); 
+
+      
+      $(document).ready(function() {
+          $('#members-per-role').DataTable({
+              paging: true,       
+              searching: true,    
+              ordering: true,
+              pageLength: 5,      
+              lengthMenu: [5, 7, 10],   
+              language: {
+                  lengthMenu: "Mostrar _MENU_ registros por página",
+                  zeroRecords: "No hay solicitudes de membresía nuevas",
+                  info: "Mostrando página _PAGE_ de _PAGES_",
+                  infoEmpty: "No hay registros disponibles",
+                  infoFiltered: "(filtrado de _MAX_ registros en total)",
+                  search: "Buscar:",
+                  paginate: {
+                      first: "Primero",
+                      last: "Último",
+                      next: "Siguiente",
+                      previous: "Anterior"
+                  }
+              }
+          });
+      });
+    </script>
+
+
+    
+</body>
+
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+</html>

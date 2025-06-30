@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+* {
+  font-family: "Instrument Sans", sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+.sidebar {
+  width: 250px;
+  height: calc(100vh - 20px);
+  background-color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  height: 35px;
+  margin-top: 10px;
+  color:#1D4ED8;
+}
+
+.sidebar-title-bold {
+  font-weight: bold;
+}
+
+.sidebar-title-normal {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.sidebar-separator {
+  border: 0;
+  height: .1px;
+  background-color: #d6dce7;
+  margin-bottom: 30px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-weight: 300;
+  
+}
+
+.sidebar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: #A0AEC0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.5s ease;
+
+}
+
+.sidebar-menu-item:hover {
+  background-color: #F1F5F9;
+  transform: scale(1.01);
+}
+
+.sidebar-icon-bg {
+  background-color: #F1F5F9;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-icon-bg img {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar-logout-button {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #2D3748;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.5s ease;
+}
+
+.sidebar-logout-button:hover {
+  background-color: rgb(255, 255, 255);
+  transform: scale(1.01);
+}
+
+/* Estilo para la opción activa en el sidebar */
+.sidebar-menu-item.active {
+  background-color: #ffffff;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-menu-item.active span {
+  color: #2D3748; /* Cambiar el color del texto también */
+}
+
+/* Estilos para el menú desplegable Agregar */
+.sidebar-menu-with-submenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #A0AEC0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.sidebar-menu-with-submenu:hover {
+  background-color: #F1F5F9;
+  transform: scale(1.01);
+}
+
+.sidebar-submenu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  background-color: #F8FAFC;
+  min-width: 160px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 8px;
+  padding: 10px 0;
+  border: 1px solid #F1F5F9;
+}
+
+.sidebar-menu-with-submenu:hover .sidebar-submenu {
+  display: block;
+}
+
+.sidebar-submenu-item {
+  display: block;
+  padding: 8px 15px;
+  color: #A0AEC0;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.5s ease;
+}
+
+.sidebar-submenu-item:hover {
+  background-color: #F1F5F9;
+  color: #2D3748;
+  transform: scale(1.01);
+  border-radius: 5px;
+}
+
+/* Botón hamburguesa oculto por defecto en dispositivos grandes */
+.hamburger-button {
+  display: none;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  /* Se oculta la sidebar fuera de la pantalla en la parte izquierda */
+  .sidebar {
+    left: -270px;
+  }
+
+  /* Al agregar la clase "active" la sidebar se muestra */
+  .sidebar.active {
+    left: 10px;
+  }
+
+  /* Mostrar el botón hamburguesa */
+  .hamburger-button {
+    display: block;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #1D4ED8;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    z-index: 1000;
+    cursor: pointer;
+  }
+}

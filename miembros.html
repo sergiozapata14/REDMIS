@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Miembros</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/estilos-miembros.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar dinámico -->
+    <div id="sidebar"></div>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <h1 class="titulo">Lista de Miembros</h1>
+
+      <!-- Sección de solicitudes aceptadas -->
+      <section class="seccion">
+        <h2 class="seccion-titulo aceptadas">Solicitudes Aceptadas</h2>
+        <div class="tabla" id="tabla-miembros-aceptados">
+          <div class="tabla-header">
+            <span>Nombre</span>
+            <span>Tipo de Membresía</span>
+            <span>Fecha Aceptada</span>
+            <span></span>
+          </div>
+          <div class="tabla-body"></div>
+          
+        </div>
+      </section>
+
+      <!-- Sección de solicitudes rechazadas -->
+      <section class="seccion">
+        <h2 class="seccion-titulo rechazadas">Solicitudes Rechazadas</h2>
+        <div class="tabla" id="tabla-miembros-rechazados">
+          <div class="tabla-header">
+            <span>Nombre</span>
+            <span>Tipo de Membresía</span>
+            <span>Fecha Solicitada</span>
+            <span></span>
+          </div>
+          <div class="tabla-body">
+            
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- Sección de solicitudes pendientes -->
+      <section class="seccion">
+        <h2 class="seccion-titulo pendientes">Solicitudes Pendientes</h2>
+        <div class="tabla" id="tabla-miembros-pendientes">
+          <div class="tabla-header">
+            <span>Nombre</span>
+            <span>Tipo de Membresía</span>
+            <span>Fecha Solicitada</span>
+            <span></span>
+          </div>
+          <div class="tabla-body">
+
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+
+
+
+
+<script type="module">
+  
+  import membersService from './API/services/members.js';
+  import loginService from './API/services/login.js';
+
+  const members = await membersService.get();
+  
+
+  const acceptedMembers = members.filter(member => member.estado === 'APROBADA');
+  const rejectedMembers = members.filter(member => member.estado === 'RECHAZADA'); 
+  const pendingMembers = members.filter(member => member.estado === 'PENDIENTE');
+
+  const acceptedTable = document.getElementById('tabla-miembros-aceptados').getElementsByClassName('tabla-body')[0];
+  const rejectedTable = document.getElementById('tabla-miembros-rechazados').getElementsByClassName('tabla-body')[0];
+  const pendingTable = document.getElementById('tabla-miembros-pendientes').getElementsByClassName('tabla-body')[0];
+
+  acceptedMembers.forEach(member => {
+    const row = document.createElement('div');
+    row.className = 'fila';
+    row.innerHTML = `
+      <span>${member.nombre_completo}</span>
+      <span>${member.membresia}</span>
+      <span>${new Date(member.fecha_solicitud).toLocaleDateString()}</span>
+      <button class="btn-editar"><i class="fas fa-edit"></i><a href="visualizarMiembro.html?memberID=${member.usuario_id}">Editar</a></button>
+    `;
+    acceptedTable.appendChild(row);
+  });
+
+  rejectedMembers.forEach(member => {
+    const row = document.createElement('div');
+    row.className = 'fila';
+    row.innerHTML = `
+      <span>${member.nombre_completo}</span>
+      <span>${member.membresia}</span>
+      <span>${new Date(member.fecha_solicitud).toLocaleDateString()}</span>
+      <button class="btn-editar"><i class="fas fa-edit"></i><a href="visualizarMiembro.html?memberID=${member.usuario_id}">Editar</a></button>
+    `;
+    rejectedTable.appendChild(row);
+  });
+
+  pendingMembers.forEach(member => {
+    const row = document.createElement('div');
+    row.className = 'fila';
+    row.innerHTML = `
+      <span>${member.nombre_completo}</span>
+      <span>${member.membresia}</span>
+      <span>${new Date(member.fecha_solicitud).toLocaleDateString()}</span>
+      <button class="btn-editar"><i class="fas fa-edit"></i><a href="visualizarMiembro.html?memberID=${member.usuario_id}">Editar</a></button>
+    `;
+    pendingTable.appendChild(row);
+  });
+
+</script>
+
+<script type="module" src="js/verification.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+
+</html>

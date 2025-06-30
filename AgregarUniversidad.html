@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Universidad</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/addCountry.css">
+</head>
+<body>
+    <div id="sidebar"></div> 
+    <div class="title-container">Agregar Universidad</div>
+    
+    <div class="form-wrapper">
+      <div class="form-box">
+        <label>Universidad</label>
+        <div id="universidad-container">
+          <input id="universidad" type="text" placeholder="Nombre de la universidad">
+        </div>
+      </div>
+      
+      <div class="accept-button-container">
+        <button id="acceptBtn" class="acceptBtn">Aceptar</button>
+      </div>
+    </div>
+
+    <script type="module">
+        import apiClient from "./API/apiClient.js";
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const acceptBtn = document.getElementById('acceptBtn');
+            const universidadInput = document.getElementById('universidad');
+            
+            acceptBtn.addEventListener('click', async () => {
+                const nombreUniversidad = universidadInput.value.trim();
+                
+                // Validación básica
+                if (!nombreUniversidad || nombreUniversidad === '') {
+                    alert('Por favor, ingrese un nombre de universidad válido.');
+                    universidadInput.focus();
+                    return;
+                }
+                
+                try {
+                    // Enviar datos al backend
+                    const response = await apiClient.post("api/universidades", { 
+                        nombre: nombreUniversidad 
+                    });
+                    
+                    if (response) {
+                        alert('Universidad creada exitosamente');
+                        universidadInput.value = ''; // Limpiar campo
+                        universidadInput.focus(); // Poner foco de nuevo
+                    } else {
+                        throw new Error('Respuesta vacía del servidor');
+                    }
+                } catch (error) {
+                    console.error('Error al crear universidad:', error);
+                    alert(`Error al crear universidad: ${error.message || 'Error desconocido'}`);
+                }
+            });
+            
+            // Opcional: Permitir crear con Enter
+            universidadInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    acceptBtn.click();
+                }
+            });
+        });
+    </script>
+
+    <script type="module" src="js/verification.js"></script>
+    <script type="module" src="js/sidebar.js"></script>
+</body>
+</html>

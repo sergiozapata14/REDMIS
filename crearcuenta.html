@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
+    <link rel="stylesheet" href="css/crearcuenta.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 70px;
+        }
+        .form-container {
+            width: 450px;
+        }
+        .full-width {
+            grid-column: span 2;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .button {
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="form-container">
+        <h2 class="title">¡Bienvenido!</h2>
+        <p class="subtitle">Ingresa la siguiente información para crear una nueva cuenta</p>
+        <form id="register-form">
+            <div class="form-grid">
+                <div>
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="input-field"  required>
+                </div>
+                <div>
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" id="apellidos" name="apellidos" class="input-field" required>
+                </div>
+                <div>
+                    <label for="genero">Género</label>
+                    <select id="genero" name="genero" class="input-field" required>
+                        <option value="" disabled selected>Selecciona tu género</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" class="input-field" required>
+                </div>
+                <div>
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" class="input-field" required>
+                </div>
+                <div>
+                    <label for="universidad">Universidad</label>
+                    <select id="universidad-select" name="universidad" class="input-field" required>
+                        <option value="" disabled selected>Selecciona tu universidad</option>
+                    </select>
+                        
+                </div>
+                <div>
+                    <label for="pais">País</label>
+                    <select id="pais-select" name="pais-select" class="input-field" required>
+                        <option value="" disabled selected>Selecciona tu país</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="estado">Estado</label>
+                    <select id="estado-select" name="estado-select" class="input-field" required>
+                        <option value="" disabled selected>Selecciona tu estado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="button">Crear Cuenta</button>
+            </div>
+        </form>
+        <p class="login-link">¿Ya tienes una cuenta? <a href="login.html">Iniciar sesión</a></p>
+    </div>
+
+    <script type="module">
+        import membersService from './API/services/members.js';
+        import statesService from './API/services/states.js';
+        import universitiesService from './API/services/universities.js';
+        import countryService from './API/services/country.js';
+
+        const states = await statesService.get();
+        const universities = await universitiesService.get();
+        const countries = await countryService.get();
+
+        const universidadSelect = document.getElementById("universidad-select");
+        const paisSelect = document.getElementById("pais-select");
+        const estadoSelect = document.getElementById("estado-select");
+        
+        // Colocar las universidades en el select
+        universities.forEach(universidad => {
+            const option = document.createElement("option");
+            option.value = universidad.id;
+            option.textContent = universidad.nombre;
+            universidadSelect.appendChild(option);
+        });
+
+        // Colocar los países en el select
+        countries.forEach(pais => {
+            const option = document.createElement("option");
+            option.value = pais.id;
+            option.textContent = pais.nombre;
+            paisSelect.appendChild(option);
+        });
+
+        // Colocar los estados en el select
+        states.forEach(estado => {
+            const option = document.createElement("option");
+            option.value = estado.id;
+            option.textContent = estado.nombre;
+            estadoSelect.appendChild(option);
+        });
+
+        // Función para hashear la contraseña usando MD5
+        function hashPasswordMD5(password) {
+            return CryptoJS.MD5(password).toString();
+        }
+
+        document.getElementById("register-form").addEventListener("submit", async function(event) {
+            event.preventDefault();      
+
+            const nombreField = document.getElementById("nombre");
+            const apellidosField = document.getElementById("apellidos");
+            const generoField = document.getElementById("genero");
+            const emailField = document.getElementById("email");
+            const passwordField = document.getElementById("password");
+
+            const universidadId = universidadSelect.value;
+            const paisId = paisSelect.value;
+            const estadoId = estadoSelect.value;
+
+            const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+            if (!nameRegex.test(nombreField.value.trim())) {
+                alert("El nombre solo debe contener letras y espacios.");
+                return;
+            }
+            if (!nameRegex.test(apellidosField.value.trim())) {
+                alert("Los apellidos solo deben contener letras y espacios.");
+                return;
+            }
+            if (!generoField.value) {
+                alert("Por favor selecciona tu género.");
+                return;
+            }
+            if (!emailRegex.test(emailField.value.trim())) {
+                alert("Ingresa un correo electrónico válido.");
+                return;
+            }
+            if (!strongPasswordRegex.test(passwordField.value)) {
+                alert("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.");
+                return;
+            }
+            if (!universidadId || !paisId || !estadoId) {
+                alert("Por favor selecciona universidad, país y estado.");
+                return;
+            }
+
+            try {
+                // Hashear la contraseña con MD5 antes de enviarla
+                const hashedPassword = hashPasswordMD5(passwordField.value);
+                
+                // Crear objeto con los datos del miembro
+                const memberData = {
+                    nombre: nombreField.value.trim(),
+                    apellidos: apellidosField.value.trim(),
+                    genero: generoField.value,
+                    email: emailField.value.trim(),
+                    password: hashedPassword,  // Enviamos la contraseña hasheada con MD5
+                    universidad: universidadId,
+                    paises: paisId,
+                    estado: estadoId
+                };
+
+                // Enviar datos al servidor
+                const response = await membersService.addMember(memberData);
+                
+                // Mostrar mensaje de éxito
+                alert('Cuenta creada exitosamente!');
+                
+                // Limpiar el formulario
+                this.reset();
+                
+                // Redirigir a verificación con el email como parámetro
+                window.location.href = `verificacion_mail.html?email=${encodeURIComponent(memberData.email)}`;
+            } catch (error) {
+                console.error('Error al crear la cuenta:', error);
+                alert('Ocurrió un error al crear la cuenta. Por favor intenta nuevamente.');
+            }
+        });
+    </script>
+</body>
+</html>

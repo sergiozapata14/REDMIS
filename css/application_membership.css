@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+* {
+  font-family: "Instrument Sans", sans-serif;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #E2E8F0; 
+    color: #2D3748;
+    font-size: 14px;
+    cursor: pointer;
+    appearance: none; 
+  }
+  
+  
+  .custom-select::after {
+    content: "▼";
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+  }
+  
+  .custom-select:hover {
+    background-color: #F1F5F9; 
+  }
+
+  label {
+    font-weight: 700;
+  }
+
+  input {
+    width: 100%;
+  }
+  textarea{
+    width: 695px;
+  }
+  
+
+  textarea{
+    resize: none;
+    border-radius: 5px;
+    border: none;
+    background-color: #E2E8F0;
+  }
+
+  textarea#comentarios {
+    margin-bottom: 15px;
+  }
+
+  #submit-membership {
+    background-color: #1D4ED8;
+    border: none;
+    border-radius: 15px;
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: 700;
+    height: 36px;
+    width: auto;
+    cursor: pointer;
+    margin-left: 263px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.1s;
+  }
+
+  #submit-membership:hover{
+    background-color: #2563EB;
+    transition: background-color 0.3s ease;
+    transform: scale(1.05);
+  }
+
+@media (max-width: 1024px) {
+  .form-box {
+    width: 100% !important; /* Reduce el ancho para que se ajuste mejor */
+    margin-left: 0px;           /* Quitamos margen lateral que rompe el layout */
+    flex-direction: column;   /* Por si en algún futuro hay más bloques */
+  }
+
+  textarea {
+    width: 100% !important; /* Que el textarea no se desborde */
+  }
+
+  #submit-membership {
+    margin-left: auto !important; /* Centra el botón */
+    margin-right: auto !important;
+    display: block;
+    
+  }
+}
+
+@media (max-width: 768px) {
+  .title-container {
+    font-size: 30px !important; /* Reduce tamaño del título */
+    left: 200px !important; /* Mueve el título más al centro */
+    top: 20px !important;
+  }
+
+  .form-container {
+    margin-top: 100px !important; /* Reduce separación del título */
+    display: flex;
+    justify-content: center;
+  }
+
+  .form-box {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-container {
+    font-size: 22px !important; /* Más chico para móviles */
+    left: 60px !important;
+    top: 20px !important;
+  }
+
+  .form-box {
+    position: absolute;
+    left: 10px;
+    width: 80% !important; /* Casi todo el ancho disponible */
+  }
+
+  .custom-select,
+  input,
+  textarea {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  #submit-membership {
+    width: 100% !important; /* Botón de ancho completo */
+    margin: 20px 0 0 0 !important;
+  }
+}

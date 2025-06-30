@@ -1,0 +1,280 @@
+:root {
+    --bgcolor: #F8F9FA;
+    --sidecolor: #0B1437;
+    --textcolor: #1D4ED8;
+    --subtextcolor: #0F172A;
+    --accentcolor: #FF9F43;
+    --cardcolor: #F0F4F9;
+    --bordercolor: #2D3B62;
+    --headercolor:#0B1437;
+    --estadisticascolor:#111C44;
+    --gaphscolor:#ffffff;
+    --secondary : #475569;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Instrument Sans", sans-serif;
+}
+
+body {
+    background-color: var(--bgcolor) !important;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.background {
+    width: 100%;
+    color: var(--textcolor);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  
+  .title-container {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--textcolor);
+    position: absolute;
+    height: 20%;
+    width: 70%;
+    padding: 20px;
+    padding-left: 100px;
+ 
+    margin: 30px 0px 60px 0px;
+  }
+  .filtro-estadisticas {
+ 
+    width: 70%;
+}
+
+.selector-estadisticas {
+    padding: 10px 15px;
+    border-radius: 15px;
+   margin-bottom: 20px;
+    background-color: var(--secondary);
+    color: var(--gaphscolor);
+    font-size: 16px;
+    cursor: pointer;
+    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selector-estadisticas:focus {
+    outline: none;
+   
+}
+
+
+
+.contenedor-main {
+    flex-grow: 1;
+    padding: 20px;
+    margin-top: 50px;
+    padding-left: 100px;
+}
+
+h2 {
+    color: var(#0F172A);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+h3 {
+    color: var(--subtextcolor);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Estadísticas superiores */
+.contenedor-header {
+    display: flex;
+    gap: 20px;
+    margin: 100px 0px 20px 0px;
+    align-items: center;
+    width: 50%;
+}
+
+.tarjeta-estadistica {
+    background-color: var(--cardcolor);
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+    color: var(--textcolor);
+   
+}
+
+.tarjeta-estadistica h3{
+    color: var(--subtextcolor);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.valor-estadistica {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+.contenedor-main{
+    width: 70%;
+
+    
+}
+
+/* Gráficos */
+.contenedor-graficos {
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    gap: 20px;
+    padding-top: 20px;
+}
+
+.grafico-pais , .grafico-estado {
+    background-color: var(--gaphscolor);
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: -1;
+}
+
+.grafico-universidad {
+    background-color: var(--gaphscolor);
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor para el canvas del gráfico */
+.contenedor-canvas {
+    height: 300px;
+    width: 100%;
+    position: relative;
+}
+
+/* Tabla de universidades */
+.tabla-universidad {
+    width: 100%;
+    margin-top: 15px;
+    color: var(--subtextcolor);
+}
+
+.cabecera-tabla {
+    display: flex;
+    border-bottom: 1px solid var(--bordercolor);
+    padding-bottom: 10px;
+    font-weight: 500;
+    color: var(--subtextcolor);
+}
+
+.columna-universidad {
+    flex: 2;
+}
+
+.columna-numero {
+    flex: 1;
+    text-align: right;
+}
+
+.fila-tabla {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bordercolor);
+}
+
+.fila-tabla:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .title-container {
+    font-size: 28px;
+    padding-left: 40px;
+    width: 90%;
+  }
+
+  .selector-estadisticas {
+    width: 100%;
+  }
+
+  .contenedor-main {
+    width: 90%;
+    padding-left: 20px;
+  }
+
+  .contenedor-header {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tarjeta-estadistica {
+    min-width: 45%;
+    margin: 10px 0;
+  }
+
+  .grafico-pais,
+  .grafico-estado,
+  .grafico-universidad {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-container {
+    font-size: 24px;
+    padding-left: 20px;
+    width: 100%;
+  }
+
+  .selector-estadisticas {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .contenedor-main {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .contenedor-header {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .tarjeta-estadistica {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .contenedor-graficos {
+    grid-template-columns: 1fr;
+  }
+
+  .cabecera-tabla, .fila-tabla {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .columna-numero {
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .contenedor-canvas {
+    height: 200px;
+  }
+
+  .grafico-pais,
+  .grafico-estado,
+  .grafico-universidad {
+    width: 300px;
+  }
+}

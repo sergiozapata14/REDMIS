@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+    
+    * {
+      font-family: "Instrument Sans", sans-serif;
+    }
+    
+    body {
+      background-color: #F8FAFC;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 200px;
+    }
+    
+    .title-container {
+      font-size: 36px;
+      font-weight: bold;
+      color: #1D4ED8;
+      position: absolute;
+      top: 60px;
+      left: 350px;
+    }
+    
+    .form-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .form-box {
+      background-color: #F0F4F9;
+      padding: 20px;
+      border-radius: 10px;
+      width: 500px;
+      color: #2D3748;
+      font-weight: 530;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+      border: 2px solid #0202021c;
+    }
+    
+    .form-box label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    
+    .form-box input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #E2E8F0;
+      color: #475569;
+    }
+    
+    .accept-button-container {
+      margin-top: 20px;
+      width: 500px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .acceptBtn {
+      background-color: #1D4ED8;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #ffffff;
+      height: 36px;
+      width: 102px;
+      cursor: pointer;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .acceptBtn:hover {
+      background-color: #2563EB;
+    transition: background-color 0.3s ease;
+    transform: scale(1.05);
+    }
+
+@media (max-width: 768px) {
+  .title-container {
+    font-size: 28px;           /* Reducimos el tamaño del título */
+    left: 20px;                /* Lo movemos hacia la izquierda */
+    top: 100px;                /* Bajamos un poco su posición */
+    text-align: center;        /* Centramos texto */
+    width: calc(100% - 40px);  /* Que no se desborde */
+  }
+
+  .form-box {
+    width: 90%;                /* Hacemos que el formulario use el 90% del ancho de pantalla */
+    padding: 15px;             /* Un poco menos de padding */
+  }
+
+  .accept-button-container {
+    width: 90%;                /* Que coincida con el form */
+    margin-top: 15px;          /* Un poco menos de margen */
+  }
+}
+
+@media (max-width: 480px) {
+  .title-container {
+    font-size: 24px;           /* Más pequeño aún para que no se rompa */
+    top: 80px;                 /* Más cerca del borde superior */
+  }
+
+  .acceptBtn {
+    width: 100%;               /* Botón a ancho completo */
+    height: 42px;              /* Más alto para que sea más fácil de tocar */
+    font-size: 16px;
+  }
+}

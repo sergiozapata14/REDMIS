@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+* {
+  font-family: "Instrument Sans", sans-serif;
+}
+
+ .form-box{
+      background-color: #2152d8;
+      color: #f7f7f7;
+      margin-top: 100px;
+
+    }
+    
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1E293B;
+      flex-grow: 1; 
+      text-align: center;
+      margin-bottom: 5px; 
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #1E293B; 
+      color: #ffffff;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .backgroundLogin {
+      width: 100%;
+      height: 600px;
+      background-color: #f7f7f7;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .custom-button {
+      background-color: #1D4ED8; 
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      text-align: center;
+    }
+    
+    .custom-button:hover {
+      background-color: #2152d8; 
+      transform: scale(1.05); 
+    }
+    
+    .custom-button:active {
+      background-color: #1940ac; 
+      transform: scale(0.98); 
+    }
+
+    .input-container {
+      position: relative;
+      width: 100%;
+    }
+
+
+    #toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 55%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #1D4ED8;
+    }
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 0 20px;
+    margin-top: 30px;
+  }
+
+  .form-box {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .form-container > div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-container img {
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .custom-button {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-box {
+    padding: 20px 15px;
+  }
+
+  .form-container {
+    margin-top: 20px;
+  }
+
+  .input-container {
+    margin-bottom: 15px;
+  }
+
+  .custom-button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .footer {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .backgroundLogin {
+    height: 400px;
+  }
+
+  .form-box {
+    width: 90%;
+    position: absolute;
+    right: 20px;
+    top: 200px;
+    width: 260px;
+  }
+
+  .form-container img {
+    position: absolute;
+    right: 10px !important;
+    width: 300px !important;
+    height: auto !important;
+  }
+}

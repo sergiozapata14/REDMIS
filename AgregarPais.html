@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar País</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/addCountry.css">
+</head>
+<body>
+    <div id="sidebar"></div> 
+    <div class="title-container">Agregar País</div>
+    
+    <div class="form-wrapper">
+      <div class="form-box">
+        <label>País</label>
+        <div id="pais-container">
+          <input id="pais" type="text" placeholder="País">
+        </div>
+      </div>
+      
+      <div class="accept-button-container">
+        <button id="acceptBtn" class="acceptBtn">Aceptar</button>
+      </div>
+    </div>
+
+    <!-- Contenedor para alertas -->
+    <div id="alert-container" style="position: fixed; top: 20px; right: 20px;"></div>
+
+    <script type="module">
+      import apiClient from "./API/apiClient.js";
+      
+      document.addEventListener('DOMContentLoaded', () => {
+          const acceptBtn = document.getElementById('acceptBtn');
+          
+          acceptBtn.addEventListener('click', async () => {
+              const paisInput = document.getElementById('pais');
+              const paisNombre = paisInput.value.trim();
+              
+              if (!paisNombre || paisNombre === '') {
+                  alert('Por favor, ingrese un nombre de pais válido.');
+                  return;
+              }
+              
+              try {
+                  const response = await apiClient.post("api/paises", { nombre: paisNombre });
+                  if (response) {
+                      alert('País agregado correctamente');
+                      paisInput.value = '';
+                  } else {
+                      alert('Error al agregar el país');
+                  }
+              } catch (error) {
+                  console.error('Error:', error);
+                  alert('Error al agregar el país: ' + (error.message || 'Error desconocido'));
+              }
+          });
+      });
+  </script>
+
+    <script type="module" src="js/verification.js"></script>
+    <script type="module" src="js/sidebar.js"></script>
+</body>
+</html>
